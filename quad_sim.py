@@ -3,6 +3,8 @@ from math import sin, cos, pi
 from scipy.integrate import solve_ivp
 from quadrotor import Quadrotor
 import matplotlib.pyplot as plt
+from mpl_toolkits import mplot3d
+from mpl_toolkits.mplot3d import Axes3D
 
 def simulate_quadrotor(x0, tf, quadrotor, use_mpc=True, use_mpc_with_clf=False, use_clf_qp=False):
   # Simulates a stabilized maneuver on the 2D quadrotor
@@ -48,11 +50,12 @@ def simulate_quadrotor(x0, tf, quadrotor, use_mpc=True, use_mpc_with_clf=False, 
 def plot_x_and_u(x, u, t, name):
   plt.figure()
   ax = plt.axes()
-  plt.plot(0, 0, 'o', label='target position')
+  plt.plot(0, 0, 0, 'o', label='target position')
   plt.plot(x[0, 0], x[0, 1], 'o', label='initial position')
   plt.plot(x[:, 0], x[:, 1], label='actual trajectory')
-  plt.xlabel("y (m)")
-  plt.ylabel("z (m)")
+  plt.xlabel("x (m)")
+  plt.ylabel("y (m)")
+  plt.zlabel("z (m)")
   plt.legend()
   ax.set_aspect('equal', 'datalim')
   ax.legend(loc='upper right')

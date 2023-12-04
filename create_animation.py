@@ -47,7 +47,7 @@ def x_d(t):
 #     # plot=ax.scatter(x_anim[i, 0], x_anim[i, 1], c='r', label='quadrotor position')
 #     plot = ax.plot([y[i] + a*cos(theta[i]), y[i] - a*cos(theta[i])],
 #                    [z[i] + a*sin(theta[i]), z[i] - a*sin(theta[i])] , 'g','LineWidtheeta',3)
-    
+
 #     if(np.abs((x_max - x_min) - (y_max - y_min)) < 5):
 #       ax.set_xlim(x_min - x_padding, x_max + x_padding)
 #       ax.set_ylim(y_min - y_padding, y_max + y_padding)
@@ -59,7 +59,7 @@ def x_d(t):
 #     return plot
 
 #   return animation.FuncAnimation(fig, frame, frames=n_frames, blit=False, repeat=False), fig
-  
+
 from mpl_toolkits.mplot3d import Axes3D
 
 def create_animation(x, tf, n_frames=60):
@@ -81,7 +81,7 @@ def create_animation(x, tf, n_frames=60):
     z_min = min(np.min(x_des[:, 2]), np.min(x[:, 2]))
 
     frame_idx = [round(x) for x in np.linspace(0, x.shape[0] - 1, n_frames).tolist()]
-    x_anim = np.zeros((n_frames, 6))
+    x_anim = np.zeros((n_frames, 12))
     for i in range(n_frames):
         x_anim[i, :] = x[frame_idx[i], :]
 
@@ -101,7 +101,7 @@ def create_animation(x, tf, n_frames=60):
         plot = ax.plot([y[i] + a*cos(theta[i]), y[i] - a*cos(theta[i])],
                        [z[i] + a*sin(theta[i]), z[i] - a*sin(theta[i])],
                        [0, 0], 'g', linewidth=3)  # Assuming z-axis values
-        
+
         ax.set_xlim(x_min, x_max)
         ax.set_ylim(y_min, y_max)
         ax.set_zlim(z_min, z_max)
