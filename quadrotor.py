@@ -98,6 +98,10 @@ class Quadrotor(object):
   def add_initial_state_constraint(self, prog, x, x_current):
     # TODO: impose initial state constraint.
     # Use AddBoundingBoxConstraint
+    print("xc")
+    print(x_current)
+    print("x0")
+    print(x[0])
     prog.AddBoundingBoxConstraint(x_current, x_current, x[0])
     # pass
 
