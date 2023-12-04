@@ -47,7 +47,7 @@ def x_d(t):
 #     # plot=ax.scatter(x_anim[i, 0], x_anim[i, 1], c='r', label='quadrotor position')
 #     plot = ax.plot([y[i] + a*cos(theta[i]), y[i] - a*cos(theta[i])],
 #                    [z[i] + a*sin(theta[i]), z[i] - a*sin(theta[i])] , 'g','LineWidtheeta',3)
-
+    
 #     if(np.abs((x_max - x_min) - (y_max - y_min)) < 5):
 #       ax.set_xlim(x_min - x_padding, x_max + x_padding)
 #       ax.set_ylim(y_min - y_padding, y_max + y_padding)
@@ -59,7 +59,7 @@ def x_d(t):
 #     return plot
 
 #   return animation.FuncAnimation(fig, frame, frames=n_frames, blit=False, repeat=False), fig
-
+  
 from mpl_toolkits.mplot3d import Axes3D
 
 def create_animation(x, tf, n_frames=60):
@@ -70,28 +70,32 @@ def create_animation(x, tf, n_frames=60):
     for i in range(t_samples.shape[0]):
         x_des[i] = x_d(t_samples[i])
 
-    fig = plt.figure(figsize=(8, 6))
-    ax = fig.add_subplot(111, projection='3d')  # Create a 3D axis
+  from matplotlib import rc
+  rc('animation', html='jshtml')
 
-    x_max = max(np.max(x_des[:, 0]), np.max(x[:, 0]))
-    x_min = min(np.min(x_des[:, 0]), np.min(x[:, 0]))
-    y_max = max(np.max(x_des[:, 1]), np.max(x[:, 1]))
-    y_min = min(np.min(x_des[:, 1]), np.min(x[:, 1]))
-    z_max = max(np.max(x_des[:, 2]), np.max(x[:, 2]))
-    z_min = min(np.min(x_des[:, 2]), np.min(x[:, 2]))
+  fig = plt.figure(figsize=(8,6))
+  ax = plt.axes()
+
+  x_max = max(np.max(x_des[:, 0]), np.max(x[:, 0]))
+  x_min = min(np.min(x_des[:, 0]), np.min(x[:, 0]))
+  y_max = max(np.max(x_des[:, 1]), np.max(x[:, 1]))
+  y_min = min(np.min(x_des[:, 1]), np.min(x[:, 1]))
 
     frame_idx = [round(x) for x in np.linspace(0, x.shape[0] - 1, n_frames).tolist()]
-    x_anim = np.zeros((n_frames, 12))
+    x_anim = np.zeros((n_frames, 6))
     for i in range(n_frames):
         x_anim[i, :] = x[frame_idx[i], :]
 
-    a = 0.25
-    y = x_anim[:, 0]
-    z = x_anim[:, 1]
-    theta = x_anim[:, 2]
+  a = 0.25
+  y = x_anim[:, 0]
+  z = x_anim[:, 1]
+  theta = x_anim[:, 2]
 
-    def frame(i):
-        ax.clear()
+  x_padding = 0.25 * (x_max - x_min)
+  y_padding = 0.25 * (y_max - y_min)
+
+  def frame(i):
+    ax.clear()
 
         # Plot in 3D
         ax.plot3D(x_des[:, 0], x_des[:, 1], x_des[:, 2], 'b*', label='desired position')
@@ -101,7 +105,7 @@ def create_animation(x, tf, n_frames=60):
         plot = ax.plot([y[i] + a*cos(theta[i]), y[i] - a*cos(theta[i])],
                        [z[i] + a*sin(theta[i]), z[i] - a*sin(theta[i])],
                        [0, 0], 'g', linewidth=3)  # Assuming z-axis values
-
+        
         ax.set_xlim(x_min, x_max)
         ax.set_ylim(y_min, y_max)
         ax.set_zlim(z_min, z_max)
